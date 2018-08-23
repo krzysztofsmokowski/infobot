@@ -13,5 +13,5 @@ class DataRequesting(object):
         weather_request = requests.get('http://api.openweathermap.org/data/2.5/forecast?q={}'.format(city) + ',{}'.format(country_symbol) + '&APPID={}'.format(self.auth)).json()
         for weather in weather_request["list"][0:20]:
             current_weather[weather["dt_txt"]] = int(weather["main"]["temp"])-273
-        return str(current_weather).replace("{", "").replace("}","")
+        return str(weather_request["country"]) + str(weather_request["city"]) + str(current_weather).replace("{", "").replace("}","")
 
