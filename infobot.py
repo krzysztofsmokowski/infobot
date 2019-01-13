@@ -6,8 +6,8 @@ from datarequesting import DataRequesting
 class Infobot(object):
     def __init__(self):
         self.bot = telepot.Bot(os.environ['telepot_auth'])
-        self.methods = ["Weather"]
- 
+        self.options = "At this moment bot allows you to check weather with command: weather {city} {country or country_symbol}"
+
     def weather_sender(self, city, country_symbol):
         weather = DataRequesting()
         weather_info = weather.current_weather(city=city, country_symbol=country_symbol)
@@ -19,16 +19,22 @@ class Infobot(object):
     def message_handler(self, msg):
         content_type, chat_type, chat_id = telepot.glance(msg)
         print(content_type, chat_type, chat_id)
-        options = "At this moment bot allows you to check weather with command: weather {city} {country or country_symbol}"
         if content_type == 'text':
-            self.bot.sendMessage(chat_id, options)
             self.bot.sendMessage(chat_id, 'you asked for : {}'.format(msg['text']))
-            if 'weather' or 'Weather' in msg['text']:
+            if 'weather' in msg['text'] or "Weather" in msg['text']:
                 try:
                     splitted_msg = msg['text'].split(' ')
                     self.weather_sender(splitted_msg[1], splitted_msg[2])
                 except IndexError:
                     self.bot.sendMessage(chat_id, "unexpected error, not enough arguments".format(msg['text']))
+            else:
+                self.bot.sendMessage(chat_id, "wrong command")
+
+    def help(self, msg):
+        content_type, chat_type, chat_id = telepot.glance(msg)
+        if content_type == 'text':
+            if "options" in msg['text']:
+                self.bot.sendMessage(chat_id, self.options)
 
     def test_receiver(self):
         self.bot.message_loop(self.message_handler)

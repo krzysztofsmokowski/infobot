@@ -15,3 +15,4 @@ class DataRequesting(object):
             return str(weather_request["city"]).replace("{", "").replace("}", "") + str(current_weather).replace("{", "").replace("}", "")
         except KeyError:
             print('No city found')
+
