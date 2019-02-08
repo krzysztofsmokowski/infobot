@@ -27,18 +27,19 @@ class Infobot(object):
                     self.weather_sender(splitted_msg[1], splitted_msg[2])
                 except IndexError:
                     self.bot.sendMessage(chat_id, "unexpected error, not enough arguments".format(msg['text']))
+            if "air" in msg['text'] or "Air" in msg['text']:
+                try:
             else:
                 self.bot.sendMessage(chat_id, "wrong command")
 
     def help(self, msg):
-        content_type, chat_type, chat_id = telepot.glance(msg)
+        content_type, chat_id = telepot.glance(msg)
         if content_type == 'text':
             if "options" in msg['text']:
                 self.bot.sendMessage(chat_id, self.options)
 
     def test_receiver(self):
         self.bot.message_loop(self.message_handler)
-
 
 def main():
     info = Infobot()
