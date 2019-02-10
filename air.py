@@ -20,11 +20,4 @@ class AirPollution(object):
                 '''todo: iterate over http://api.gios.gov.pl/pjp-api/rest/station/sensors/{stationId} in order to get sensor id?'''
         return requested_data
 
-'''
-def main():
-    air = AirPollution()
-    print(air.station_info("Wrocław"))
 
-if __name__ == "__main__":
-    main()
-'''

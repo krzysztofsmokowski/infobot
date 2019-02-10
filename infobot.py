@@ -2,6 +2,8 @@ import os
 import time
 import telepot
 from datarequesting import DataRequesting
+from air import AirPollution
+
 
 class Infobot(object):
     def __init__(self):
@@ -16,7 +18,19 @@ class Infobot(object):
         except:
             self.bot.sendMessage(os.environ['telepot_id'], "city not found")
 
+    def air_sender(self, city):
+        air = AirPollution()
+        air_info = air.station_info(city=city)
+        try:
+            self.bot.sendMessage(os.environ['telepot_id'], air_info)
+        except:
+            self.bot.sendMessage(os.environ['telepot_id'], "city not found")
+
     def message_handler(self, msg):
+        '''
+        Air pollution checker is key sensitive, if you want to know weather in polish cities
+        you have to remember about polish signs and capital letter at the begininng of any city name
+        '''
         content_type, chat_type, chat_id = telepot.glance(msg)
         print(content_type, chat_type, chat_id)
         if content_type == 'text':
@@ -27,8 +41,12 @@ class Infobot(object):
                     self.weather_sender(splitted_msg[1], splitted_msg[2])
                 except IndexError:
                     self.bot.sendMessage(chat_id, "unexpected error, not enough arguments".format(msg['text']))
-            if "air" in msg['text'] or "Air" in msg['text']:
+            elif "air" in msg['text'] or "Air" in msg['text']:
                 try:
+                    splitted_msg = msg['text'].split(' ')
+                    self.air_sender(splitted_msg[1])
+                except IndexError:
+                    self.bot.sendMessage(chat_id, "unexpected error, wrong argument".format(msg['text']))
             else:
                 self.bot.sendMessage(chat_id, "wrong command")
 

@@ -4,7 +4,7 @@ import requests
 class DataRequesting(object):
     def __init__(self):
         self.auth = os.environ['weather_auth']
- 
+
     def current_weather(self, city, country_symbol):
         city = str(city.capitalize())
         current_weather = {}
