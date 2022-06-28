@@ -1,0 +1,10 @@
+version: '2'
+
+services:
+  infobot:
+    build: .
+    environment:
+            telepot_id: $telepot_id
+            telepot_auth: $telepot_auth
+            weather_auth: $weather_auth
+
